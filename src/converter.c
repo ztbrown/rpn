@@ -3,5 +3,10 @@
 #include "converter.h"
 
 void to_rpn(const char *infix, char *buf){
-    strcpy(buf, "ab+");
+    buf[0] = infix[0];
+    buf[1] = infix[2];
+    buf[2] = infix[1];
+
+    buf[3] = '\0';
 }
+
