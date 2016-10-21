@@ -4,15 +4,40 @@
 
 void to_rpn(const char *infix, char *buf){
 
-    buf[0] = infix[0];
+    char op_stack[256] = { };
+    char *op_stack_ptr = op_stack;
+    char top;
+    int num = 0;
+    char *buf_ptr = buf;
 
-    for(int i = 0; i < (sizeof(infix)/sizeof(infix[0])); i++){
+    for(int i = 0; i < strlen(infix); i++){
         if (infix[i] == '+')
         {
-            buf[i] = infix[i+1];
-            buf[i+1] = '+';
+            if (top == '+')
+            {
+                *buf_ptr++ = infix[i];
+            }
+            else
+            {
+                *op_stack_ptr++ = infix[i];
+                num++;
+                top = infix[i];
+            }
+        }
+        else if (infix[i] == '-')
+        {
+            num++;
+            *op_stack_ptr++ = infix[i];
+        }
+        else if (infix[i])
+        {
+            *buf_ptr++ = infix[i];
         }
     }
-    strcat(buf, "");
+
+    while(num--)
+        *buf_ptr++ = *(--op_stack_ptr);
+
+    *buf_ptr++ = '\0';
 }
 
