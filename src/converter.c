@@ -5,7 +5,8 @@
 typedef int bool;
 enum { false, true };
 
-static bool is_operator(const char c);
+static bool is_operator(const char token);
+static bool operator_has_precedence(const char token, const char top);
 
 void to_rpn(const char *infix, char *buf){
 
@@ -18,9 +19,11 @@ void to_rpn(const char *infix, char *buf){
     for(int i = 0; i < strlen(infix); i++){
         if (is_operator(infix[i]))
         {
-            if ((infix[i] == '+') && (top == '+'))
+            if (operator_has_precedence(infix[i], top))
             {
-                *buf_ptr++ = infix[i];
+                *buf_ptr++ = *(--op_stack_ptr);
+                *op_stack_ptr++ = infix[i];
+                top = infix[i];
             }
             else
             {
@@ -44,4 +47,9 @@ void to_rpn(const char *infix, char *buf){
 static bool is_operator(const char token)
 {
     return token == '+' || token == '-' || token == '*';
+}
+
+static bool operator_has_precedence(const char token, const char top)
+{
+    return token == '+' && (top == '+' || top == '-' || top == '*');
 }
