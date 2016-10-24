@@ -11,9 +11,9 @@ void to_rpn(const char *infix, char *buf){
     char *buf_ptr = buf;
 
     for(int i = 0; i < strlen(infix); i++){
-        if (infix[i] == '+')
+        if ((infix[i] == '+') || (infix[i] == '-'))
         {
-            if (top == '+')
+            if ((infix[i] == '+') && (top == '+'))
             {
                 *buf_ptr++ = infix[i];
             }
@@ -23,11 +23,6 @@ void to_rpn(const char *infix, char *buf){
                 num++;
                 top = infix[i];
             }
-        }
-        else if (infix[i] == '-')
-        {
-            num++;
-            *op_stack_ptr++ = infix[i];
         }
         else if (infix[i])
         {
