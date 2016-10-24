@@ -43,6 +43,14 @@ START_TEST(to_rpn_turns_a_minus_b_times_c_into_a_b_c_times_minus)
 }
 END_TEST
 
+START_TEST(to_rpn_turns_a_divide_b_exponent_c_into_a_b_c_exponent_divide)
+{
+    char buf[256] = { };
+    to_rpn("a/b^c", buf);
+    ck_assert_str_eq(buf, "abc^/");
+}
+END_TEST
+
 Suite *to_rpn_suite(void){
     Suite *s; 
     TCase *tc;
@@ -55,6 +63,7 @@ Suite *to_rpn_suite(void){
     tcase_add_test(tc, to_rpn_turns_a_plus_b_plus_c_into_a_b_plus_c_plus);
     tcase_add_test(tc, to_rpn_turns_a_plus_b_minus_c_into_a_b_c_minus_plus);
     tcase_add_test(tc, to_rpn_turns_a_minus_b_times_c_into_a_b_c_times_minus);
+    tcase_add_test(tc, to_rpn_turns_a_divide_b_exponent_c_into_a_b_c_exponent_divide);
 
     suite_add_tcase(s, tc);
 
