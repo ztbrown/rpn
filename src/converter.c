@@ -30,18 +30,14 @@ void to_rpn(const char *infix, char *buf){
     for(int i = 0; i < strlen(infix); i++){
         if (is_operator(infix[i]))
         {
-            if (top != NULL && !operator_has_precedence(infix[i], top))
+            while (top != NULL && !operator_has_precedence(infix[i], top) && num > 0)
             {
                 *buf_ptr++ = *(--op_stack_ptr);
-                *op_stack_ptr++ = infix[i];
-                top = infix[i];
+                num--;
             }
-            else
-            {
-                *op_stack_ptr++ = infix[i];
-                num++;
-                top = infix[i];
-            }
+            *op_stack_ptr++ = infix[i];
+            top = infix[i];
+            num++;
         }
         else if (infix[i])
         {
