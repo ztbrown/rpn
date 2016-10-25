@@ -59,6 +59,14 @@ START_TEST(to_rpn_turns_a_times_b_minus_c_plus_d_into_a_b_times_c_minus_d_plus)
 }
 END_TEST
 
+START_TEST(to_rpn_can_handle_multiple_high_precedence_operators_preceding_multiple_low_precedence_operators)
+{
+    char buf[256] = { };
+    to_rpn("l/m^n*o-p", buf);
+    ck_assert_str_eq(buf, "lmn^/o*p-");
+}
+END_TEST
+
 Suite *to_rpn_suite(void){
     Suite *s; 
     TCase *tc;
@@ -73,6 +81,7 @@ Suite *to_rpn_suite(void){
     tcase_add_test(tc, to_rpn_turns_a_minus_b_times_c_into_a_b_c_times_minus);
     tcase_add_test(tc, to_rpn_turns_a_divide_b_exponent_c_into_a_b_c_exponent_divide);
     tcase_add_test(tc, to_rpn_turns_a_times_b_minus_c_plus_d_into_a_b_times_c_minus_d_plus);
+    tcase_add_test(tc, to_rpn_can_handle_multiple_high_precedence_operators_preceding_multiple_low_precedence_operators);
 
     suite_add_tcase(s, tc);
 
